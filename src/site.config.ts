@@ -6,6 +6,8 @@ export const theme: ThemeUserConfig = {
   title: 'Astro Theme Pure',
   /** Will be used in index page & copyright declaration */
   author: 'Pure Lab',
+  /** The year the site was established. If specified, the copyright year will be displayed as a range. */
+  since: 2024,
   /** Description metadata for your website. Can be used in page metadata. */
   description: 'Stay hungry, stay foolish',
   /** The default favicon for your site which should be a path to an image in the `public/` directory. */
@@ -73,7 +75,6 @@ export const theme: ThemeUserConfig = {
       {
         title: 'Site Policy',
         link: '/terms/list',
-        pos: 2 // position set to 2 will be appended to copyright line
       }
     ],
     /** Enable displaying a “Astro & Pure theme powered” link in your site’s footer. */
