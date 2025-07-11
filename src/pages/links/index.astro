@@ -3,7 +3,7 @@ import links from 'public/links.json'
 import config from 'virtual:config'
 
 import { Comment } from 'astro-pure/advanced'
-import { Collapse, Timeline } from 'astro-pure/user'
+import { Collapse, Timeline, Signature } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import FriendList from '@/components/links/FriendList.astro'
 
@@ -60,5 +60,6 @@ const linksConf = config.integ.links
     <li>请确保你的站点活着；</li>
     <li>博客内容不违反国家法律。</li>
   </ul>
+  {config.signature && <Signature />}
   <Comment slot='bottom' />
 </PageLayout>

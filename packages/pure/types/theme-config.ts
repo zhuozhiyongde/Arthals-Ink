@@ -170,7 +170,9 @@ export const ThemeConfigSchema = () =>
 
       /** Share buttons to show */
       share: ShareSchema()
-    })
+    }),
+
+    signature: z.boolean().default(true)
   })
 
 export type ThemeUserConfig = z.input<ReturnType<typeof ThemeConfigSchema>>

@@ -11,6 +11,7 @@ import remarkMath from 'remark-math'
 // Local integrations
 // Local rehype & remark plugins
 import rehypeAutolinkHeadings from './src/plugins/rehype-auto-link-headings.ts'
+import rehypeWrapContentTables from './src/plugins/rehype-table.ts'
 // Shiki
 import {
   addCopyButton,
@@ -72,7 +73,8 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [
-      [rehypeKatex, {}],
+      rehypeWrapContentTables,
+      [rehypeKatex, { strict: false }],
       rehypeHeadingIds,
       [
         rehypeAutolinkHeadings,

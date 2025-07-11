@@ -1,6 +1,8 @@
 ---
+import config from 'virtual:config'
+
 import { Comment } from 'astro-pure/advanced'
-import { Button, Collapse, Spoiler, Timeline } from 'astro-pure/user'
+import { Button, Collapse, Spoiler, Timeline, Signature } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import Substats from '@/components/about/Substats.astro'
 import ToolSection from '@/components/about/ToolSection.astro'
@@ -257,5 +259,6 @@ const headings = [
       >
     </li>
   </ul>
+  {config.signature && <Signature />}
   <Comment slot='bottom' />
 </PageLayout>

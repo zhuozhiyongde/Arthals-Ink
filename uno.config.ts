@@ -1,4 +1,9 @@
-import { defineConfig, presetMini, presetTypography, type Rule } from 'unocss'
+import {
+  defineConfig,
+  presetMini,
+  presetTypography,
+  type Rule
+} from 'unocss'
 
 const fg = 'hsl(var(--foreground) / var(--un-text-opacity, 1))'
 const fgMuted = 'hsl(var(--muted-foreground) / var(--un-text-opacity, 1))'
@@ -31,6 +36,7 @@ const typographyConfig = {
     blockquote: {
       position: 'relative',
       overflow: 'hidden',
+      'font-style': 'normal',
       'border-width': '1px',
       'border-left': 'inherit',
       'border-radius': 'var(--radius)',
@@ -112,6 +118,19 @@ const typographyConfig = {
     'code:not(pre code)': {
       'white-space': 'pre-wrap!important',
       'word-break': 'break-all!important'
+    },
+    '.katex-html': {
+      overflow: 'auto hidden',
+      padding: '3px'
+    },
+    '.katex-html .base': {
+      'margin-block': '0',
+      'margin-inline': 'auto'
+    },
+    '.katex-html .tag': {
+      position: 'relative !important',
+      display: 'inline-block',
+      'padding-inline-start': '0.5rem'
     }
   }
 }
@@ -167,6 +186,13 @@ const rules: Rule<object>[] = [
       'white-space': 'nowrap',
       'border-width': '0'
     }
+  ],
+  // Object fit
+  [
+    'object-cover',
+    {
+      'object-fit': 'cover'
+    }
   ]
 ]
 
@@ -187,6 +213,7 @@ export default defineConfig({
     'rounded-b-2xl',
     // Typography
     'text-base',
-    'prose'
+    'prose',
+    'm-2',
   ]
 })
