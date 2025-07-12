@@ -1,6 +1,6 @@
 import {
   defineConfig,
-  presetMini,
+  presetWind3,
   presetTypography,
   type Rule
 } from 'unocss'
@@ -198,8 +198,8 @@ const rules: Rule<object>[] = [
 
 export default defineConfig({
   presets: [
-    presetMini(), // required
-    // presetWind3(), // original full version
+    // presetMini(), // required
+    presetWind3(), // original full version
     presetTypography(typographyConfig)
   ],
   rules,
