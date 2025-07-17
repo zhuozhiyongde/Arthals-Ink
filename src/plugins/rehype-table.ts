@@ -22,7 +22,7 @@ const rehypeWrapContentTables: Plugin<[], Root> = () => {
           type: 'element',
           tagName: 'div',
           properties: {
-            className: ['overflow-x-auto', 'w-full']
+            className: ['overflow-x-auto', 'w-full','flex', 'justify-center']
           },
           children: [node] // Place the table inside the wrapper
         }
