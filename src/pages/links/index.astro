@@ -3,14 +3,16 @@ import links from 'public/links.json'
 import config from 'virtual:config'
 
 import { Comment } from 'astro-pure/advanced'
-import { Collapse, Timeline, Signature } from 'astro-pure/user'
+import { Collapse, Timeline } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import FriendList from '@/components/links/FriendList.astro'
+import Signature from '@/components/pages/Signature.astro'
 
 const headings = [
   { depth: 2, slug: 'common-links', text: 'Common Links' },
   { depth: 2, slug: 'special-links', text: 'Special Links' },
-  { depth: 2, slug: 'apply-links', text: 'Apply Links' }
+  { depth: 2, slug: 'apply-links', text: 'Apply Links' },
+  { depth: 2, slug: 'friend-circle', text: 'Friend Circle' }
 ]
 
 const { friends } = links
@@ -49,17 +51,27 @@ const linksConf = config.integ.links
     }
   </blockquote>
 
-  <p>
-    申请时还请按照这个模板留言（<a
-      href='https://github.com/cworld1/astro-theme-pure/blob/main/public/links.json'
-      target='_blank'>提交 PR</a
-    > 或许也是个更快的办法）。此外有关申请说明：
-  </p>
+  <p>申请时还请按照这个模板留言，此外有关申请说明：</p>
   <ul>
     <li>在你的友链上添加了本站；</li>
     <li>请确保你的站点活着；</li>
     <li>博客内容不违反国家法律。</li>
   </ul>
+  <h2 id='friend-circle'>Friend Circle</h2>
+  <div id='friend-circle-lite-root' class='not-prose'>Loading...</div>
+  <script>
+    import '@/assets/styles/fc.css'
+
+    import { FriendCircle } from '@/plugins/friend-circle'
+
+    const fc = new FriendCircle()
+    fc.init({
+      private_api_url: 'https://friends.arthals.ink/',
+      page_turning_number: 10,
+      error_img: 'https://cravatar.cn/avatar/57d8260dfb55501c37dde588e7c3852c'
+    })
+    fc.load()
+  </script>
   {config.signature && <Signature />}
   <Comment slot='bottom' />
 </PageLayout>
