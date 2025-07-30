@@ -1,0 +1,10 @@
+<svg id="warpIcon" data-name="warpIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 24.7387">
+  <defs>
+    <linearGradient id="_warp_gradient_6" data-name="warp_gradient 6" x1="15.1521" y1="24.6794" x2="28.7816" y2="1.0725" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#01a7fd"/>
+      <stop offset="1" stop-color="#01ffc2"/>
+    </linearGradient>
+  </defs>
+  <path d="M16.0467,0h12.3373c1.9956-.0015,3.6145,1.6151,3.616,3.6107,0,.0018,0,.0036,0,.0053v14.0387c.0022,1.9956-1.6137,3.6151-3.6093,3.6173-.0022,0-.0044,0-.0067,0H10.7293L16.0467,0Z" style="fill: url(#_warp_gradient_6);"/>
+  <path d="M13.8053,3.4667l-4.784,19.1387h7.464l-.532,2.1333H3.616C1.6204,24.7401.0015,23.1236,0,21.128c0-.0018,0-.0036,0-.0053V7.084c-.0015-1.9956,1.6151-3.6145,3.6107-3.616.0018,0,.0036,0,.0053,0l10.1893-.0013Z" style="fill: #184f83;"/>
+</svg>

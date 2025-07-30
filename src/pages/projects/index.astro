@@ -15,14 +15,14 @@ const headings = [
   { depth: 2, slug: 'theme', text: 'Theme' },
   { depth: 2, slug: 'programs', text: 'Programs' },
   { depth: 2, slug: 'learnings', text: 'Learnings' },
-  { depth: 2, slug: 'others', text: 'Others' },
+  // { depth: 2, slug: 'others', text: 'Others' },
   { depth: 2, slug: 'gpg-signature', text: 'GPG Signature' },
   { depth: 2, slug: 'sponsorship', text: 'Sponsorship' }
 ]
 ---
 
 <PageLayout title='Projects' {headings} info={{ slug: '/projects', hideComment: true }}>
-  <p>Github Activities:</p>
+  <!-- <p>Github Activities:</p>
   <p>
     <Image
       src='https://ghchart.rshah.org/659eb9/cworld1'
@@ -30,12 +30,9 @@ const headings = [
       inferSize
       loading='lazy'
     />
-  </p>
-  <p>
-    If you think it would be useful or interesting to collaborate on a project, you can donate to
-    support my work or contact me to discuss a project.
-  </p>
-  <Button title='Checkout sponsorship' class='w-fit' href='#sponsorship'>
+  </p> -->
+  <p>如果你认为我的工作很有用或有趣，您可以捐赠以支持我的工作，或联系我讨论项目。</p>
+  <Button title='赞赏我的工作' class='w-fit' href='#sponsorship'>
     <Icon class='size-5' name='receive-money' slot='before' />
   </Button>
 
@@ -61,29 +58,54 @@ const headings = [
   <ProjectSection
     project={[
       {
-        name: '📒 Notie',
-        description:
-          'Android note App complies with Material You specifications, developed using Java',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/notie' },
-          {
-            type: 'release',
-            href: 'https://github.com/cworld1/notie/releases'
-          }
-        ]
-      },
-      {
         name: '💄 PKU Art',
-        description: 'A script to beautify pku course website',
+        description: '简洁优雅的教学网美化方案',
         links: [
           { type: 'github', href: 'https://github.com/zhuozhiyongde/pku-art' },
           { type: 'site', href: 'https://github.com/zhuozhiyongde/pku-art' },
           { type: 'doc', href: 'https://docs.arthals.ink/docs/pku-art' }
         ]
+      },
+      {
+        name: '🤖 PKU Auto Elective',
+        description: '北京大学刷课机',
+        links: [
+          { type: 'github', href: 'https://github.com/zhuozhiyongde/PKUElective2024Spring' },
+          { type: 'site', href: 'https://docs.arthals.ink/docs/pku-auto-elective' },
+          { type: 'doc', href: 'https://docs.arthals.ink/docs/pku-auto-elective' }
+        ]
+      },
+      {
+        name: '🤖 PKUHSC Auto Elective',
+        description: '北京大学医学部刷课机',
+        links: [
+          { type: 'github', href: 'https://github.com/zhuozhiyongde/pkuhsc-autoelective' },
+          { type: 'site', href: 'https://docs.arthals.ink/docs/pkuhsc-auto-elective' },
+          { type: 'doc', href: 'https://docs.arthals.ink/docs/pkuhsc-auto-elective' }
+        ]
+      },
+      {
+        name: '🎓 PKU Auto Reservation',
+        description: '北京大学自动预约入校',
+        links: [
+          { type: 'github', href: 'https://github.com/zhuozhiyongde/pku-auto-reservation' },
+          { type: 'site', href: 'https://docs.arthals.ink/docs/pku-auto-reservation' },
+          { type: 'doc', href: 'https://docs.arthals.ink/docs/pku-auto-reservation' }
+        ]
+      },
+      {
+        name: '🌈 PKU Grade Watcher',
+        description: '北京大学成绩自动查询',
+        links: [{ type: 'github', href: 'https://github.com/zhuozhiyongde/pku-grade-watcher' }]
+      },
+      {
+        name: '🌟 Gaze Stars',
+        description: '根据 GitHub Star 列表自动生成 README 的 GitHub Action',
+        links: [{ type: 'github', href: 'https://github.com/zhuozhiyongde/gaze-stars' }]
       }
     ]}
   />
-  <Collapse title='Some old projects'>
+  <!-- <Collapse title='Some old projects'>
     <ProjectSection
       project={[
         {
@@ -101,31 +123,100 @@ const headings = [
         }
       ]}
     />
-  </Collapse>
+  </Collapse> -->
 
   <h2 id='learnings'>Learnings</h2>
   <ProjectSection
     class='my-2'
     project={[
       {
-        name: 'Rust Learning',
-        description: 'Some notes and code about CWorld learning Rust',
-        links: [{ type: 'github', href: 'https://github.com/cworld1/rust-learning' }]
-      },
-      {
-        name: 'CS 213 Learning',
-        description: 'Notes, code and experiences for Introduction to Computer Systems course',
+        name: '计算机系统导论 / ICS',
+        description: '北京大学 2023 年秋季计算机系统导论课程笔记、代码、往年题和经验',
         links: [
           {
             type: 'github',
             href: 'https://github.com/zhuozhiyongde/Introduction-To-Computer-System-2023Fall-PKU'
           }
         ]
+      },
+      {
+        name: '高等数学 B / 高数 B',
+        description: '北京大学 2022 年高等数学 B 课程笔记、往年题和经验',
+        links: [
+          {
+            type: 'github',
+            href: 'https://github.com/zhuozhiyongde/Advanced-Mathematics-B-2022-PKU'
+          }
+        ]
+      },
+      {
+        name: '人工智能基础 / AI 基础',
+        description: '北京大学 2024 年春季人工智能基础课程笔记、作业、往年题和经验',
+        links: [
+          {
+            type: 'github',
+            href: 'https://github.com/zhuozhiyongde/Fundamentals-Of-Artificial-Intelligence-2024Spring-PKU'
+          }
+        ]
+      },
+      {
+        name: '简明量子力学 / 简量',
+        description: '北京大学 2024 年春季简明量子力学课程作业、往年题和经验',
+        links: [
+          {
+            type: 'github',
+            href: 'https://github.com/zhuozhiyongde/Simplified-Quantum-Mechanics-2024Spring-PKU'
+          }
+        ]
+      },
+      {
+        name: '编译原理 / 编译',
+        description: '北京大学 2024 年秋季编译原理课程笔记、作业、往年题和经验',
+        links: [
+          {
+            type: 'github',
+            href: 'https://github.com/zhuozhiyongde/Compiler-Principles-2024Fall-PKU'
+          },
+          {
+            type: 'release',
+            href: 'https://github.com/zhuozhiyongde/SysY-Compiler-2024Fall-PKU'
+          }
+        ]
+      },
+      {
+        name: '信息学中的概率统计 / 信概统',
+        description: '北京大学 2024 年秋季信息学中的概率统计课程笔记、作业、往年题和经验',
+        links: [
+          {
+            type: 'github',
+            href: 'https://github.com/zhuozhiyongde/Probability-Theory-and-Statistics-2024Fall-PKU'
+          }
+        ]
+      },
+      {
+        name: '计算机视觉导论 / CV 导论',
+        description: '北京大学 2025 年春季计算机视觉导论课程笔记、作业、往年题和 CheatSheet',
+        links: [
+          {
+            type: 'github',
+            href: 'https://github.com/zhuozhiyongde/Introduction-To-Computer-Vision-2025Spring-PKU'
+          }
+        ]
+      },
+      {
+        name: '具身智能导论 / EAI 导论',
+        description: '北京大学 2025 年春季具身智能导论课程笔记、作业、往年题和 CheatSheet',
+        links: [
+          {
+            type: 'github',
+            href: 'https://github.com/zhuozhiyongde/Embodied-Artificial-Intelligence-2025Spring-PKU'
+          }
+        ]
       }
     ]}
   />
 
-  <h2 id='others'>Others</h2>
+  <!-- <h2 id='others'>Others</h2>
   <ProjectSection
     project={[
       {
@@ -139,28 +230,33 @@ const headings = [
         links: [{ type: 'github', href: 'https://github.com/zhuozhiyongde' }]
       }
     ]}
-  />
+  /> -->
 
   <!-- gpg signature -->
   <h2 id='gpg-signature'>GPG Signature</h2>
   <p>
-    You can verify the authenticity of the files I signed by checking the GPG signature. My GPG key
-    is <code>114514</code>, and you can find it on the opengpg key servers or download from it.
+    你可以通过检查 GPG 签名来验证我签名的文件的真实性。我的 GPG 密钥是 <code
+      >43AAB8A483D43DFFAFD7C8C8DAAAA2D31BB0250E</code
+    >，你可以在 openpgp 密钥服务器上找到它或从那里下载。
   </p>
-  <Button href='https://keys.openpgp.org/search?q=114514' title='Checkout my key' target='_blank'>
+  <Button
+    href='https://keys.openpgp.org/search?q=43AAB8A483D43DFFAFD7C8C8DAAAA2D31BB0250E'
+    title='验证密钥'
+    target='_blank'
+  >
     <KeyIcon class='size-5' slot='before' />
   </Button>
 
   <!-- sponsorship -->
-  <h2 id='sponsorship'>Sponsorship</h2>
-  <p>Please leave a message or contact me proactively after sponsorship.</p>
+  <h2 id='sponsorship'>赞赏</h2>
+  <p>感谢您的赞赏，您的支持是我最大的动力。</p>
   <Sponsorship
     methods={[
       { name: 'WeChat', icon: 'wechat-pay', image: wechat },
       { name: 'Alipay', icon: 'alipay', image: alipay }
     ]}
   />
-  <p>Thanks to the following sponsors:</p>
+  <!-- <p>Thanks to the following sponsors:</p>
   <Sponsors
     sponsors={[
       { name: 'C*a（酷安@暴走の蜗牛）', amount: '2.00', date: '2019-07-02' },
@@ -168,7 +264,7 @@ const headings = [
       { name: '◌(QQ：1934****45)', amount: '3.00', date: '2019-12-30' },
       { name: 'Anonymous', amount: '20.00', date: '2022-04-06' }
     ]}
-  />
+  /> -->
 </PageLayout>
 
 <script
