@@ -94,6 +94,33 @@ const { class: className } = Astro.props
     --waline-box-shadow: none;
   }
 
+  /* Fix long text and links overflow */
+  #waline :global(.wl-content, .wl-text, .wl-comment-text) {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    max-width: 100%;
+  }
+
+  #waline :global(a) {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    max-width: 100%;
+    display: inline-block;
+  }
+
+  #waline :global(.wl-item, .wl-card-item) {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  #waline :global(.wl-meta) {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
   /* Reaction buttons */
   #waline :global(.wl-reaction-title, .wl-reaction-text) {
     display: none;
