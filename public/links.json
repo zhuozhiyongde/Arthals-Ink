@@ -5,22 +5,263 @@
       "desc": "Common links included in circle friends",
       "link_list": [
         {
-          "name": "Arthals' ink",
-          "intro": "所见高山远木，阔云流风；所幸岁月盈余，了无拘束",
-          "link": "https://arthals.ink/",
-          "avatar": "https://cdn.arthals.ink/Arthals.png"
+          "name": "Magma",
+          "intro": "技术宅",
+          "link": "https://magma.ink",
+          "avatar": "https://q1.qlogo.cn/g?b=qq&nk=823202450&s=640"
+        },
+        {
+          "name": "Yixuan Wang",
+          "intro": "来自中文系的数算助教（？",
+          "link": "https://blog.yixuan-wang.site",
+          "avatar": "https://blog.yixuan-wang.site/favicon.svg"
+        },
+        {
+          "name": "Ruiqi Lei",
+          "intro": "The quick brown fox jumps over the lazy dog.",
+          "link": "https://rn7s2.cn",
+          "avatar": "https://avatars.githubusercontent.com/u/29171574?v=4"
+        },
+        {
+          "name": "Hans362",
+          "intro": "不以物喜，不以己悲",
+          "link": "https://www.hans362.cn",
+          "avatar": "https://hans362.cn/avatar.jpg"
+        },
+        {
+          "name": "Suemor",
+          "intro": "所谓自由就是可以说二加二等于四的自由",
+          "link": "https://suemor.com",
+          "avatar": "https://y.suemor.com/images89030875.jpeg"
+        },
+        {
+          "name": "Lynn",
+          "intro": "林中抚琴曲委婉，群山听懂我悲欢",
+          "link": "https://blog.lynn6.cn",
+          "avatar": "https://blog-dogecdn.lynn6.cn/pic/fb2c42d74892b1e208c0be7af2be20b31627004540489.jpeg"
+        },
+        {
+          "name": "尘末の小站",
+          "intro": "呜。。来看点有意思的吗~",
+          "link": "https://cmoms.top",
+          "avatar": "https://q.qlogo.cn/g?b=qq&nk=2895521977&s=640"
+        },
+        {
+          "name": "Ghost_chu’s Blog",
+          "intro": "『保持初心』大概是这个时代最大的难题",
+          "link": "https://www.ghostchu.com",
+          "avatar": "https://q1.qlogo.cn/g?b=qq&nk=2908803755&s=640"
+        },
+        {
+          "name": "Star&blog",
+          "intro": "Happy life",
+          "link": "https://www.ssstttar.com",
+          "avatar": "https://cdn.jsdelivr.net/gh/Ssttar/static/blog/202308301630773.jpg"
+        },
+        {
+          "name": "静かな森",
+          "intro": "致虚极，守静笃。",
+          "link": "https://innei.in",
+          "avatar": "https://q.qlogo.cn/g?b=qq&nk=1003521738&s=640"
+        },
+        {
+          "name": "天翔TNXGの空间站",
+          "intro": "明日尚未到来，希望凝于心上",
+          "link": "https://tnxg.top",
+          "avatar": "https://api-space.tnxg.top/avatar?s=qq"
+        },
+        {
+          "name": "Jayden's site",
+          "intro": "为天地立心,为生民立命, 为往圣继绝学,为万世开太平。",
+          "link": "https://xxu.do",
+          "avatar": "https://github.com/Jaaayden.png"
+        },
+        {
+          "name": "Into TARDIS~",
+          "intro": "Never cruel, never cowardly.",
+          "link": "https://lyt0112.com",
+          "avatar": "https://cdn.lyt0112.com/avatars/square_small_d&t.jpeg"
         },
         {
           "name": "CWorld Site",
           "intro": "求知若愚，虚怀若谷",
           "link": "https://cworld0.com/",
           "avatar": "https://cravatar.cn/avatar/1ffe42aa45a6b1444a786b1f32dfa8aa?s=200"
+        },
+        {
+          "name": "SkyWT",
+          "intro": "热爱与激情永不止息。",
+          "link": "https://skywt.cn",
+          "avatar": "https://skywt.cn/avatar.png"
+        },
+        {
+          "name": "满久琦的个人网站",
+          "intro": "天上如是，地下亦然",
+          "link": "https://www.manjiuqi.com",
+          "avatar": "https://static.yhdzz.cn/logos/512x512.png"
+        },
+        {
+          "name": "Oyiso's Blog",
+          "intro": "The shortest answer is doing",
+          "link": "https://oyiso.cn",
+          "avatar": "https://oyiso.cn/logo.png"
+        },
+        {
+          "name": "C+V",
+          "intro": "万物可爱，你也不例外",
+          "link": "https://pku-cs-cjw.top/",
+          "avatar": "https://www.helloimg.com/i/2024/09/25/66f355782f700.jpg"
+        },
+        {
+          "name": "银河渡舟",
+          "intro": "醉后不知天在水，满船清梦压星河",
+          "link": "https://suborbit.net/",
+          "avatar": "https://suborbit.net/assets/avatar.png"
+        },
+        {
+          "name": "喵二の小博客",
+          "intro": "缘，妙不可言",
+          "link": "https://www.miaoer.net/",
+          "avatar": "https://static.miaoer.net/logo/avatar.webp"
+        },
+        {
+          "name": "单项式的笔记本",
+          "intro": "你想在这里看到些什么呢？",
+          "link": "https://bcmonomial.xyz/",
+          "avatar": "https://bcmonomial.xyz/images/xyy_current.png"
+        },
+        {
+          "name": "YangTY's Blog",
+          "intro": "越过山川",
+          "link": "https://blog.imyangty.com/",
+          "avatar": "https://blog.imyangty.com/assets/avatar.jpg"
+        },
+        {
+          "name": "Elykia",
+          "intro": "致以无暇之人",
+          "link": "https://blog.elykia.cn/",
+          "avatar": "https://bu.dusays.com/2024/10/25/671b2438203a6.gif"
+        },
+        {
+          "name": "LargeSkullのBlog",
+          "intro": "Eureka Moment！",
+          "link": "https://largeskull.github.io/",
+          "avatar": "https://largeskull.github.io/images/avatar.jpg"
+        },
+        {
+          "name": "ZLA 小站",
+          "intro": "不要哭，不要笑，不要恨，要理解。",
+          "link": "https://www.zla.pub/",
+          "avatar": "https://cdn.v2ex.com/gravatar/cba8b28739dd6225f6fe961762bdb0b71b858d68c83d946a37cee3b0e0daece5?size=512"
+        },
+        {
+          "name": "Davidの3号基地",
+          "intro": "一入医门深似海，从此笃行无归途",
+          "link": "https://www.david03.top/",
+          "avatar": "https://www.david03.top/favicon.ico"
+        },
+        {
+          "name": "xyx404",
+          "intro": "在努力和摆烂中选择了努力摆烂 AWA",
+          "link": "https://xyx404.github.io/",
+          "avatar": "https://fastly.jsdelivr.net/npm/xyx404blogphoto@1.2.23/avatar.webp"
+        },
+        {
+          "name": "Hinai",
+          "intro": "曇花一現",
+          "link": "https://blog.woo.moe",
+          "avatar": "https://data.woo.moe/img/ico/104491469_0_r.png"
+        },
+        {
+          "name": "K1tyoo’ Log",
+          "intro": "GenAI is pure magic!",
+          "link": "https://k1tyoo.ink",
+          "avatar": "https://k1tyoo.ink/avatar.png"
+        },
+        {
+          "name": "朔方",
+          "intro": "咏奏妖华",
+          "link": "https://www.northarea.tech/",
+          "avatar": "https://avatars0.githubusercontent.com/u/3104820?s=460&v=4"
+        },
+        {
+          "name": "FurryMonster",
+          "intro": "Code as an Artist,Live as a Dreamer",
+          "link": "https://www.furrym0nster.org/",
+          "avatar": "https://avatars.githubusercontent.com/u/158404543?v=4"
+        },
+        {
+          "name": "探机之家",
+          "intro": "探机的自我修养",
+          "link": "https://cclin.org/",
+          "avatar": "https://cclin.org/probe-circle.png"
+        },
+        {
+          "name": "KittySite",
+          "intro": "波澜壮阔，一事无成",
+          "link": "https://blog.konpaku.cn/",
+          "avatar": "https://cos-shanghai-01-1301223281.cos.ap-shanghai.myqcloud.com/box/imgs/youmu-header.webp"
+        },
+        {
+          "name": "XINGJI",
+          "intro": "迄今所有人生都大写着失败，但不妨碍我继续向前✨",
+          "link": "https://vite.xingji.fun",
+          "avatar": "https://i.p-i.vip/47/20240920-66ed7b168c38c.jpg"
+        },
+        {
+          "name": "妖居小憩",
+          "intro": "随性而不随意",
+          "link": "https://Ye1f.xin",
+          "avatar": "https://q.qlogo.cn/g?b=qq&nk=2086519059&s=640"
+        },
+        {
+          "name": "Ethan",
+          "intro": "Don’t stay awake for too long.",
+          "link": "https://hanlife02.com",
+          "avatar": "https://hanlife02.com/api/v2/objects/avatar/evcvs61h0ajgvoai07.jpeg"
+        },
+        {
+          "name": "Masttf",
+          "intro": "退役Acmer 是个菜鸡",
+          "link": "https://epiphyllum.masttf.fun/",
+          "avatar": "https://epiphyllum.masttf.fun/avatar.jpg"
+        },
+        {
+          "name": "王小明的杂物堆",
+          "intro": "乱七八糟就像我一样",
+          "link": "https://imwzj.uk/",
+          "avatar": "https://avatars.githubusercontent.com/u/87957461"
+        },
+        {
+          "name": "Bokey Space",
+          "intro": "留下属于我们的痕迹",
+          "link": "https://bokey.space/",
+          "avatar": "https://bokey-space.oss-cn-shenzhen.aliyuncs.com/pro/global/my-avatar.png"
+        },
+        {
+          "name": "Axi's Blog",
+          "intro": "一只可爱小猫",
+          "link": "https://axi404.top",
+          "avatar": "https://axi404.top/avatar/avatar.png"
+        },
+        {
+          "name": "Georgeの小窝",
+          "intro": "刀不锋利马太瘦，你拿什么跟我斗",
+          "link": "https://www.george-blog.top/",
+          "avatar": "https://www.george-blog.top/wp-content/uploads/2025/07/cropped-George.jpg",
+          "rss": "https://www.george-blog.top/?feed=rss2"
+        },
+        {
+          "name": "Wcowin's Blog",
+          "intro": "循此苦旅，以达星辰",
+          "link": "https://wcowin.work/",
+          "avatar": "https://pic4.zhimg.com/80/v2-a0456a5f527c1923f096759f2926012f_1440w.webp"
         }
       ]
     },
     {
       "id_name": "inactive-links",
-      "desc": "Inactive or rule-breaking friends",
+      "desc": "不太活跃的好友",
       "link_list": []
     },
     {
@@ -38,6 +279,12 @@
           "intro": "随机前往开往的成员博客",
           "link": "https://www.travellings.cn/go.html",
           "avatar": "https://www.travellings.cn/assets/travelling.png"
+        },
+        {
+          "name": "BlogFinder",
+          "intro": "聚合优秀的个人博客，发掘优质的个人博客文章和内容",
+          "link": "https://bf.zzxworld.com/s",
+          "avatar": "https://bf.zzxworld.com/images/favicon.png"
         }
       ]
     }

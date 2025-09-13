@@ -76,8 +76,8 @@ export default function AstroPureIntegration(opts: UserInputConfig): AstroIntegr
             plugins: [vitePluginUserConfig(userConfig, config)]
           },
           markdown: {
-            remarkPlugins,
-            rehypePlugins
+            remarkPlugins: [...(config.markdown.remarkPlugins || []), ...remarkPlugins],
+            rehypePlugins: [...(config.markdown.rehypePlugins || []), ...rehypePlugins]
             // rehypePlugins: [rehypeRtlCodeSupport()],
             // shikiConfig:
             // Configure Shiki theme if the user is using the default github-dark theme.
