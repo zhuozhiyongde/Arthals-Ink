@@ -1,0 +1,545 @@
+---
+title: 雀魂 MajsoulMax / Akagi / MajsoulCopilot / MajsoulHelper 使用教程
+description: '科学麻将死路一条！'
+publishDate: 2025-07-17 15:03:27
+tags: ['majsoul','mitm','surge','clash']
+---
+
+import { GithubCard } from 'astro-pure/advanced'
+import { Aside } from 'astro-pure/user'
+
+<Aside type='danger' title='写在前面'>
+
+1. 本文及出现的我的相关项目仅供学习参考之用，请勿用于商业用途，请使用者于下载 24 小时内删除相关内容。
+2. 不建议使用 AI 代打（但你可以适当使用 AI 辅助学习如何打牌可以最大化牌效、如何防守等），这于你的技术水平无益，AI 上去的分也没有意义，而且使用自动代打极其容易被封号。
+3. 如果本文或相关项目对你有帮助，欢迎 Star。
+4. **四麻游戏，再也不玩了，这个 b 游戏就不知道是谁在赢，拼尽全力无法战胜旺仔和猫粮，怒删之 —— 2025.08.26**
+
+</Aside>
+
+## MajsoulMax
+
+雀魂 Max 可用于本地解锁全角色、皮肤、装扮等。
+
+原始 Python 仓库：
+
+<GithubCard repo='Avenshy/MajsoulMax' />
+
+基于 Rust 重构的仓库：
+
+<GithubCard repo='Xerxes-2/MajsoulMax-rs' />
+
+在前者基础上，外加 TinyProxy 做鉴权并封装为了 Docker 镜像：
+
+<GithubCard repo='zhuozhiyongde/MajsoulMax-rs-docker' />
+
+<Aside type='caution'>
+
+MajsoulMax 初始化的时候会自动下载更新 `liqi` 这一依赖，请保证你的网络环境可以正常访问 GitHub。
+
+同时，建议关闭 MajsoulMax 的 `helper` 功能。
+
+</Aside>
+
+### 解锁原理
+
+首先我们要明白，MITM（Man-in-the-Middle） 中间人攻击的本质是在雀魂游戏进程和服务器之间插入一个代理。当游戏客户端发送请求到服务器，或服务器返回响应给客户端时，这些网络流量都会经过我们启动的代理程序。
+
+也即，原来是：
+
+```
+game -> server
+```
+
+现在变成了：
+
+```
+game -> proxy -> server
+```
+
+代理程序会识别出特定的游戏数据包（Protobuf 格式），并根据预设的规则在本地对其进行实时修改，将“未拥有”的角色或装扮数据修改为“已拥有”。修改后的数据包再被发送到游戏客户端，从而在视觉上欺骗客户端，让我们看到已经解锁了全角色和装扮。这个过程只发生在你的电脑或手机上，服务器端的数据完全没有改变。
+
+由于他只是一个代理，所以部署在本地或者服务器 VPS 上都可以，而如果部署在 VPS 上，便可以实现全平台使用，且数据共享。
+
+各个版本的差异：
+
+- Python：基于 mitmproxy 实现，兼容性最好，但需要手动安装管理依赖，可以比较方便的实现上下游代理链，兼容本地 AI 使用。
+- Rust / Docker：基于 hudsucker 实现，兼容性较差，优点是已经完全编译为二进制文件，快速启动无需安装依赖。
+
+注意，Rust / Docker 所基于的 [omjadas/hudsucker](https://github.com/omjadas/hudsucker) 项目有一个很令人困惑的地方，即其虽然身为会进行 MITM 的节点，但是对外提供的是 HTTP 的代理节点而非 HTTPS 的代理节点。这导致你必须在填写代理软件的时候，填写 HTTP 代理，并且同时信任其自签名的证书，而且在对流量进行代理链式配置的时候（如搭配本地 AI 软件），也会存在一些问题。
+
+这点具体表现在：
+
+1. 游戏初始化的时候不能过双层代理链（解锁 + AI），只能插入一层代理
+
+2. 通过 Surge 测速的时候，日志会显示
+
+   ```bash
+   WARN hudsucker::proxy::internal: Unknown protocol, read '[48, 45, 41, 44]' from upgraded connection
+   ```
+
+   不过这并不影响使用。
+
+我尝试了一些办法，但始终无法解决这个问题，只能做简易 Patch，详情见后。
+
+### 启动代理
+
+请首先阅读各项目的 README 文档，了解启动方法。
+
+#### Python
+
+```bash
+git clone https://github.com/Avenshy/MajsoulMax.git
+cd MajsoulMax
+pip install -r requirements.txt
+mitmdump -p 23410 -s addons.py
+```
+
+#### Rust
+
+无需下载源码，直接在 [Releases](https://github.com/Xerxes-2/MajsoulMax-rs/releases) 根据你的平台下载二进制文件，解压出来后运行 `majsoul_max_rs` 即可。
+
+#### Docker
+
+目前只支持 Linux 平台。
+
+1. **拉取并启动服务**
+
+    创建并进入目录：
+
+    ```bash
+    mkdir majsoul && cd majsoul
+    ```
+
+    然后创建 `docker-compose.yml`：
+
+    ```yaml
+    services:
+        majsoul-proxy:
+            image: arthals/majsoul-max-rs:latest
+            restart: unless-stopped
+            ports:
+                # 将容器的 23411 端口映射到宿主机的 8888 端口
+                - '8888:23411'
+            volumes:
+                - ./app:/app
+            environment:
+                - username=username
+                - password=password
+                # Github 代理下载
+                - download_url=https://ghproxy.net/https://github.com/Xerxes-2/MajsoulMax-rs/releases/download/0.6.7/majsoul_max_rs-0.6.7-x86_64-unknown-linux-gnu.tar.gz
+                # 原始下载
+                # - download_url=https://github.com/Xerxes-2/MajsoulMax-rs/releases/download/0.6.7/majsoul_max_rs-0.6.7-x86_64-unknown-linux-gnu.tar.gz
+                # 可选：代理下载
+                # - http_proxy=${HTTP_PROXY:-http://172.17.0.1:7890}
+                # - https_proxy=${HTTPS_PROXY:-http://172.17.0.1:7890}
+    ```
+
+    启动容器：
+
+    ```bash
+    docker compose up -d
+    ```
+
+    默认会：
+
+    - 映射宿主机 `8888` 端口到容器 `23411` 端口。
+    - 使用账号 `username/password` 进行 Basic Auth 认证。
+    - 通过 `download_url` 环境变量自动下载 GNU 版本的可执行文件。
+
+    如需修改端口或账号密码，请直接编辑 `docker-compose.yml` 对应字段即可。
+
+2. **验证运行**
+
+    ```bash
+    curl -k -x http://username:password@127.0.0.1:8888 https://baidu.com --head
+    ```
+
+    返回 `HTTP/1.1 200 OK` 即代表代理工作正常。
+    
+    **然后你需要放行你服务器的 8888（或同自定义）端口，使之可以在外网访问。**
+
+### 信任证书
+
+- 对于原始 Python 仓库，需要信任 `~/.mitmproxy/` 下的 `mitmproxy-ca.pem` 证书。这个证书是本地自动生成的，非常安全。
+- 对于 Rust 版本或者 Docker 封装版本，需要信任 [hudsucker.cer](https://github.com/omjadas/hudsucker/blob/main/examples/ca/hudsucker.cer) 证书。这个证书是在源码中写死的，如果你担心安全性，想要更换证书，你需要下载源码替换后重新编译。
+
+以下以 `hudsucker.cer` 证书为例，讲解步骤：
+
+#### macOS
+
+1. 将证书拖入到 `钥匙串访问-系统-证书` 中
+
+   ![macOS1](https://cdn.arthals.ink/bed/2025/07/macOS1-b716a33505ca9cd7a1a01f5dc2a45864.png)
+
+2. `右键-显示简介-信任`，调整为始终信任，然后关闭，输入密码确认。
+
+   ![macOS2](https://cdn.arthals.ink/bed/2025/07/macOS2-d97be61dc305b5151fcbf9cfd7bdd2bd.png)
+
+#### iOS / iPadOS
+
+1. 将下载好的 `hudsucker.cer` 隔空投送到 iPhone/iPad 上，进入 `设置-已下载描述文件`，点击安装
+
+2. 前往 `通用-关于本机-证书信任设置`，打开 Hudsucker Industries 的选项
+
+   ![iOS](https://cdn.arthals.ink/bed/2025/07/iOS-f73a37ab1e52b72c31a696a148108107.png)
+
+#### Windows / Android
+
+点击下载下来的 `hudsucker.cer` 证书文件，跟随指引安装证书即可。
+
+### 代理配置
+
+原始项目需要使用 Proxifier 来进行流量代理，然而我们有更好的选择，那就是直接利用 Surge / Clash 来进行规则分流代理。
+
+<Aside type='caution'>
+
+请注意：
+
+- 如果是本地客户端，请开启 TUN / 增强模式以确保正确代理进程流量。
+- 如果你使用网页版或者不方便使用 PROCESS-NAME 规则的情况，请使用后文所列的域名关键字或者 IP 分流规则。
+- 如果你使用的是支持覆写的代理软件，请参考他们各自的配置方法，便可实现在原有代理配置的基础上添加节点和规则，如 [Stash](https://stash.wiki/configuration/override) / [Mihomo Party](https://mihomo.party/docs/guide/override/yaml)。
+
+</Aside>
+
+以下配置在 macOS Steam 客户端和 iOS / iPadOS 港服客户端测试通过，注意替换相关字段（IP、端口、协议、账号密码）为你的实际值。
+
+#### Python
+
+提供的是本地 HTTPS 节点，无需账号密码。
+
+Clash 配置示例：
+
+```yml
+proxies:
+    - name: Majsoul
+      port: 23410
+      server: 127.0.0.1
+      tls: true
+      type: http
+proxy-groups:
+    - name: 🀄 雀魂麻将
+      proxies:
+          - Majsoul
+          - DIRECT
+      type: select
+rules:
+    - PROCESS-NAME,雀魂麻將,🀄 雀魂麻将
+    - PROCESS-NAME,jantama_mahjongsoul.exe,🀄 雀魂麻将
+    - PROCESS-NAME,Jantama_MahjongSoul.exe,🀄 雀魂麻将
+```
+
+Surge 配置示例：
+
+```text
+[Proxy]
+Majsoul = https, 127.0.0.1, 23410
+
+[Proxy Group]
+🀄 雀魂麻将 = select, Majsoul, DIRECT
+
+[Rule]
+PROCESS-NAME,雀魂麻將,🀄 雀魂麻将
+```
+
+#### Rust
+
+提供的是本地 HTTP 节点，无需账号密码。
+
+Clash 配置示例：
+
+```yml
+proxies:
+    - name: Majsoul
+      port: 23410
+      server: 127.0.0.1
+      tls: false
+      type: http
+proxy-groups:
+    - name: 🀄 雀魂麻将
+      proxies:
+          - Majsoul
+          - DIRECT
+      type: select
+rules:
+    - PROCESS-NAME,雀魂麻將,🀄 雀魂麻将
+    - PROCESS-NAME,jantama_mahjongsoul.exe,🀄 雀魂麻将
+    - PROCESS-NAME,Jantama_MahjongSoul.exe,🀄 雀魂麻将
+```
+
+Surge 配置示例：
+
+```text
+[Proxy]
+Majsoul = http, 127.0.0.1, 23410
+
+[Proxy Group]
+🀄 雀魂麻将 = select, Majsoul, DIRECT
+
+[Rule]
+PROCESS-NAME,雀魂麻將,🀄 雀魂麻将
+```
+
+#### Docker
+
+提供的是远程 HTTP 节点，需要账号密码、IP 端口等配置，此时服务器作为中间代理，而客户端设备只需要信任证书后配置节点和分流规则即可。
+
+Docker 的配置和 Rust 非常类似，只是多了一个鉴权部分。
+
+Clash：
+
+```yaml
+proxies:
+    - name: Majsoul
+      port: your_service_port
+      server: your_server_ip
+      tls: false
+      type: http
+      username: username
+      password: password
+```
+
+Surge：
+
+```text
+[Proxy]
+Majsoul = http, your_server_ip, 8888, username, password
+```
+
+如果你是桌面端，请参考之前的 Rust 版本配置，只需替换 `proxies` 字段即可，无需对规则做操作；
+
+如果你是移动端设备（如 iOS / iPadOS 无法使用 PROCESS-NAME 规则，会被忽略）或者是安卓但不确定 PROCESS-NAME 是否正确，以及使用的网页版进行游戏，那你需要将规则改为域名关键字或者 IP 分流，如下：
+
+Clash：
+
+```yml
+rules:
+    - DOMAIN-KEYWORD,majsoul,🀄 雀魂麻将
+    - DOMAIN-KEYWORD,maj-soul,🀄 雀魂麻将
+    - DOMAIN-KEYWORD,catmjstudio,🀄 雀魂麻将
+    - DOMAIN-KEYWORD,catmajsoul,🀄 雀魂麻将
+    - IP-CIDR,146.66.155.0/24,🀄 雀魂麻将
+    - IP-CIDR,185.25.182.18/32,🀄 雀魂麻将
+    - IP-CIDR,203.107.63.200/32,🀄 雀魂麻将
+```
+
+Surge：
+
+```text
+[Rule]
+DOMAIN-KEYWORD,majsoul,🀄 雀魂麻将
+DOMAIN-KEYWORD,maj-soul,🀄 雀魂麻将
+DOMAIN-KEYWORD,catmjstudio,🀄 雀魂麻将
+DOMAIN-KEYWORD,catmajsoul,🀄 雀魂麻将
+IP-CIDR,146.66.155.0/24,🀄 雀魂麻将
+IP-CIDR,185.25.182.18/32,🀄 雀魂麻将
+IP-CIDR,203.107.63.200/32,🀄 雀魂麻将
+```
+
+## Akagi
+
+Akagi 可以提供 AI 雀魂分析，帮你分析下一步应当打什么牌，并且具有一个十分现代化的 TUI（Terminal UI），对于 Windows 客户端，还可以下载编译好的版本完成自动代打，不过我没尝试过。
+
+<GithubCard repo="shinkuan/Akagi"/>
+
+![akagi](https://cdn.arthals.ink/bed/2025/07/%E9%9B%80%E9%AD%82%E9%BA%BB%E5%B0%87%202025-07-17%2018.47.29-a158455a43331aa0738a0879cf1ed471.png)
+
+### AI 原理
+
+和解锁类似，AI 的工作流程也是通过 MITM 来截获对局信息，从而还原出牌局状况，然后送入 AI 来进行分析。所以你需要类似的完成信任证书、配置软件分流的操作。
+
+Akagi 使用的证书和 MajsoulMax 的 Python 版本一致，位于 `~/.mitmproxy`。
+
+对于 Windows 用户，可以直接下载编译好的 exe 可执行文件；对于 macOS 用户，则必须手动执行 py 脚本。
+
+### 启动 AI
+
+```bash
+git clone https://github.com/shinkuan/Akagi.git
+cd Akagi
+pip install -r requirements.txt
+# 然后按照原仓库的 README 走
+# 先按照 For Developer 走，配置好 libriichi 的依赖
+# 然后同前文（macOS）或者 README（Windows） 一样，安装证书。
+python run_akagi.py
+```
+
+原始仓库提供了一个基础的 Mortal 版本，不过你可以在 [这个 issue](https://github.com/latorc/MahjongCopilot/issues/67) 下载到更新的权重。
+
+<Aside type='caution'>
+
+**需要注意的是，如果你替换了权重，那你也需要相应的修改 `mjai_bot/mortal` 下的 `model.py` 和 `bot.py`**，注意 issue 直接下载下来的 `model.py` 直接拖进去是不行的，这两个文件都需要稍微的改一改导入语句。
+
+</Aside>
+
+## MajsoulCopilot
+
+类似 Akagi 的项目，也是可以本地提供 AI 辅助，不同的是其同时支持 Windows / macOS 的自动打牌功能，而 Akagi 虽然也支持，但只支持 Windows 平台。
+
+<GithubCard repo="latorc/MahjongCopilot"/>
+
+我的 Fork 版本（修了一些 macOS 上的证书信任检测问题，支持兼容雀魂 Max 解锁，但 [PR](https://github.com/latorc/MahjongCopilot/pull/79) 尚未合并，推荐使用）：
+
+<GithubCard repo="zhuozhiyongde/MahjongCopilot"/>
+
+### 自动打牌原理
+
+自动打牌基本就是通过在浏览器里定位控件元素，并模拟鼠标操作，来完成自动打牌、自动开启对局等功能。
+
+然而，其不仅存在一些限制（浏览器分辨率、尺寸等），而且浏览器的渲染界面（至少在 macOS 上）精度不如客户端，体验也有所残缺，且自动打牌很容易被封号，所以不建议使用。
+
+### 启动 Copilot
+
+参见原文 README 即可。
+
+与 Akagi 不同的是，对于 MahjongCopilot，只需要将模型文件拖入即可，无需再额外修改代码。
+
+值得注意的一点是，MahjongCopilot 与前文的项目有所不同的一点是，其做了一层隔离，所需要信任的证书位于 `./mitm_config` 下而非默认的 `~/.mitmproxy`，这一点在联合使用的时候可能需要注意，但代码应当会自动完成信任过程。
+
+## 联合使用
+
+### MajsoulHelper
+
+MajsoulHelper 是由我重新编排整理的一个新的项目，其修改了 MajsoulMax 和 Akagi 的原始代码，使得这些服务能够更好的在服务器上进行部署。
+
+简单来说，包括如下核心修改：
+
+1. 为 MajsoulMax 增加 HTTP Auth 鉴权。
+2. 移除 Akagi 的 TUI 部分，完全转为后端服务，其在收到数据包后会进行 AI 计算分析，然后将结果更新，并启动一个对外的 WebSocket 服务器，从而允许前端进行渲染。
+3. 增加了 AkagiFrontend 项目，其是一个 React 编写的前端页面，可以与 WebSocket 服务器进行通信，并进行 Web 或者 LiveStream 渲染，从而允许你在手机上利用画中画（PiP）功能同时观看游戏界面与 AI 分析。
+4. 将所有服务完全容器化，可以轻松部署到任何服务器上，也可以利用端口转发进行前后端分离。
+
+![akagi-frontend](https://cdn.arthals.ink/bed/2025/08/CleanShot%202025-08-22%20at%2002.31.49-c27ce353ec98580945ed2934d24cc077.jpg)
+
+具体的使用方式参见下述项目的 README 即可。
+
+<div class='flex flex-col gap-y-4'>
+
+<GithubCard repo="zhuozhiyongde/MajsoulHelper"/>
+
+<GithubCard repo="zhuozhiyongde/MajsoulMax"/>
+
+<GithubCard repo="zhuozhiyongde/Akagi"/>
+
+<GithubCard repo="zhuozhiyongde/AkagiFrontend"/>
+
+</div>
+
+数据代理链条如下：
+
+```
+game -> MajsoulMax(23410, http) -> akagi(7880, http internal) -> server
+```
+
+显示链条如下：
+
+```
+game -> MajsoulMax(23410, http) -> akagi(7880, http internal) -> akagi_data_server(8765, ws) -> akagi_frontend(4173, http)
+```
+
+### Akagi + MajsoulMax
+
+由于二者都需要进行 MITM，所以你需要配置代理链让流量串行经过两个节点，并且需要同时信任二者的证书。
+
+<Aside type='caution'>
+
+注意，联用二者的时候，千万不要同时使用 PROCESS-NAME 和 DOMAIN-KEYWORD / IP-CIDR 规则，否则容易导致回环代理，出现 Bug。
+
+</Aside>
+
+这里有基于 MajsoulMax-rs 和基于 MajsoulMax 的两种配置，配置相近，不同点在于：
+
+1. MajsoulMax-rs（Rust）启动的是 HTTP 代理（基于 hudsucker），且链式代理时，初始化的时候会遇到问题
+2. MajsoulMax（Python）启动的是 HTTPS 代理（基于 mitmproxy），可以完美进行链式代理。
+
+虽然听起来后者更好，但还是建议按照前者走，原因无他，方便快捷（无需切换 Python 环境等）。
+
+Rust 版本代理链条如下：
+
+```
+game -> majsoul_max_rs(23410, http) -> akagi(7880, https) -> server
+```
+
+Python 版本代理链条如下：
+
+```
+game -> MajsoulMax(23410, https) -> akagi(7880, https) -> server
+```
+
+建议的配置如下：
+
+Clash：
+
+```yaml
+proxies:
+    - name: Majsoul
+      port: your_service_port
+      server: your_server_ip
+      tls: false
+      type: http
+      username: username
+      password: password
+    - name: MajsoulLocal
+      port: 23410
+      server: 127.0.0.1
+      tls: false
+      type: http
+    - name: Akagi
+      port: 7880
+      server: 127.0.0.1
+      tls: true
+      type: http
+proxy-groups:
+    - name: 🀄 雀魂麻将
+      proxies:
+          - Majsoul
+          - MajsoulLocal
+          - DIRECT
+          - 🔰 节点选择
+      type: select
+rules:
+    - PROCESS-NAME,雀魂麻將,🀄 雀魂麻将
+    - PROCESS-NAME,majsoul_max_rs,Akagi
+```
+
+Surge：
+
+```text
+[Proxy]
+Majsoul = http, your_server_ip, your_service_port, username, password
+MajsoulLocal = http, 127.0.0.1, 23410
+Akagi = http, 127.0.0.1, 7880
+
+[Proxy Group]
+🀄 雀魂麻将 = select, Majsoul, MajsoulLocal, DIRECT, 🔰 节点选择
+
+[Rule]
+PROCESS-NAME,雀魂麻將,🀄 雀魂麻将
+PROCESS-NAME,majsoul_max_rs,Akagi
+```
+
+这么配置的好处在于，你可以在不想用 AI 的时候分流到服务器上的 Majsoul 节点进行简单的解锁，而在需要 AI 的时候，先通过服务器节点或者直连进行初始化，然后再换到本地的 MajsoulLocal 节点即可。
+
+如果你实在嫌麻烦，你还可以让 LLM 给你写一个基于 Clash / Surge HTTP API 的自动化脚本，来完成这个过程。
+
+### MahjongCopilot + MajsoulMax
+
+参见 [我的 Fork](https://github.com/zhuozhiyongde/MahjongCopilot) 的 README 即可。
+
+在 `settings.json` 中设置 `"majsoulmax_proxy": "http://127.0.0.1:23410"` 。
+
+随后，请以如下方式启动 MajsoulMax：
+
+```bash
+mitmdump -p 23410 --mode upstream:http://127.0.0.1:10999 -s addons.py --ssl-insecure
+```
+
+请注意，如果你修改了 MajsoulMax 或者 MahjongCopilot 的代理端口，请相应修改对应端口，并且确保 MajsoulMax 和 MahjongCopilot 的自签名证书均正确安装（这两者是不同的，前者默认使用 `~/.mitmproxy/` 下的证书，而后者使用 `./mitm_config/` 下的证书）。
+
+最终代理链为：
+
+```
+game -> MajsoulMax(23410, https) -> MahjongCopilot(10999, https) -> server
+```
+
+分流类似前文，在此不再赘述。

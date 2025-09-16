@@ -1,45 +1,127 @@
 ---
-import { Button, Collapse, Spoiler, Timeline } from 'astro-pure/user'
+import config from 'virtual:config'
+import { Button, Collapse, Spoiler, Timeline, Signature } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import Substats from '@/components/about/Substats.astro'
 import ToolSection from '@/components/about/ToolSection.astro'
+import zotero from '@/assets/tools/zotero.png'
 
 const headings = [
-  { depth: 2, slug: 'hobbies', text: 'Hobbies' },
-  { depth: 2, slug: 'tools', text: 'Tools' },
-  { depth: 2, slug: 'social-networks', text: 'Social Networks' },
-  { depth: 2, slug: 'gossips', text: 'Gossips' },
-  { depth: 2, slug: 'about-blog', text: 'About Blog' }
+  {
+    depth: 2,
+    slug: 'tools',
+    text: 'Tools'
+  },
+  {
+    depth: 2,
+    slug: 'social-networks',
+    text: 'Social Networks'
+  },
+  {
+    depth: 2,
+    slug: 'education',
+    text: 'Education'
+  },
+  {
+    depth: 2,
+    slug: 'experience',
+    text: 'Experience'
+  },
+  {
+    depth: 2,
+    slug: 'about-blog',
+    text: 'About Blog'
+  }
 ]
 ---
 
 <PageLayout title='About' {headings} comment>
-  <p>Developer / Designer</p>
+  <h2 id='general-talk' class='invisible m-0 h-0'>General Talk</h2>
+  <p class='text-muted-foreground'>Developer / Designer / <del>Medical student </del></p>
+  <p>你好，我叫 Arthals，是一个兴趣使然、热爱编程的医学生。</p>
   <p>
-    Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione indoctum
-    dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel, at eum oratio
-    possit voluptatum.
+    目前就读于北京大学医学部，同时修读计算机科学技术双学位。一边被 <del> 病理病生理药理 </del>
+    内外妇儿折磨，一边在
+    <del> ICS 的 Lab 作业 </del> Pytorch 中 debug 到头秃。
   </p>
-  <p>
-    My motto: Stay hungry, Stay foolish. <Spoiler>这里可以夹私货，比如为什么要演奏春日影！</Spoiler>
-  </p>
-  <Button title='Sponsor Me' class='w-fit' href='/projects#sponsorship' variant='ahead' />
-
-  {/* general-talk */}
-  <h2 id='hobbies'>Hobbies</h2>
-  <ul>
-    <li>Lorem ipsum dolor sit amet, vidit suscipit at mei.</li>
-    <li>
-      Quem denique mea id. Usu ei regione indoctum dissentiunt, cu meliore fuisset mei, vel quod
-      voluptua ne.
-    </li>
-    <li>Ex dicat impedit mel, at eum oratio possit voluptatum.</li>
-    <li>Impetus fuisset ullamcorper pri cu, his posse iisque ad, aliquam honestatis usu id.</li>
-  </ul>
+  <p>我的兴趣主要在 CV / Embodied AI 方向。</p>
+  <p>我喜欢 Minecraft。</p>
+  <div class='flex w-fit gap-x-2'>
+    <!-- <img
+      src='https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fzhuozhiyongde&count_bg=%23000000&title_bg=%23000000&icon=spacex.svg&icon_color=%23E7E7E7&title=Hits&edge_flat=true'
+      class='my-0 rounded-md border'
+    /> -->
+    <img
+      alt='CodeTime Badge'
+      src='https://shields.jannchie.com/endpoint?style=flat&color=222&url=https%3A%2F%2Fapi.codetime.dev%2Fv3%2Fusers%2Fshield%3Fuid%3D20455'
+      class='rounded-md border'
+    />
+  </div>
 
   {/* tools */}
   <h2 id='tools'>Tools</h2>
-  <p>Current support tools as follow:</p>
+  <p>以下是我正在使用的一些工具：</p>
+  <ToolSection
+    class='mb-5'
+    title='Productivity'
+    tools={[
+      {
+        name: 'Arc',
+        description: 'Broswer',
+        href: 'https://arc.net/',
+        icon: import('@/assets/tools/arc.svg?raw')
+      },
+      {
+        name: 'Tailscale',
+        description: 'VPN',
+        href: 'https://tailscale.com/',
+        icon: import('@/assets/tools/tailscale.svg?raw')
+      },
+      {
+        name: 'Typora',
+        description: 'Markdown Editor',
+        href: 'https://typora.io/',
+        icon: import('@/assets/tools/typora.svg?raw')
+      },
+      {
+        name: 'Zotero',
+        description: 'Reference Management',
+        href: 'https://www.zotero.org/',
+        icon: zotero
+      }
+    ]}
+  />
+  <ToolSection
+    class='mb-5'
+    title='Development'
+    tools={[
+      {
+        name: 'Cursor',
+        description: 'AI Code Editor',
+        href: 'https://www.cursor.com/',
+        icon: import('@/assets/tools/cursor.svg?raw'),
+        darkIcon: import('@/assets/tools/cursor_dark.svg?raw')
+      },
+      {
+        name: 'VS Code',
+        description: 'IDE',
+        href: 'https://code.visualstudio.com/',
+        icon: import('@/assets/tools/vscode.svg?raw')
+      },
+      {
+        name: 'Warp',
+        description: 'Terminal',
+        href: 'https://warp.dev/',
+        icon: import('@/assets/tools/warp.svg?raw')
+      },
+      {
+        name: 'LobeChat',
+        description: 'AI Chat',
+        href: 'https://www.lobehub.com/',
+        icon: import('@/assets/tools/lobechat.svg?raw')
+      }
+    ]}
+  />
   <ToolSection
     class='mb-5'
     title='Design'
@@ -50,77 +132,17 @@ const headings = [
         href: 'https://www.adobe.com/products/photoshop',
         icon: import('@/assets/tools/photoshop.svg?raw')
       },
+      // {
+      //   name: 'Illustrator',
+      //   description: 'Vector Drawing',
+      //   href: 'https://www.adobe.com/products/illustrator',
+      //   icon: import('@/assets/tools/illustrator.svg?raw')
+      // },
       {
-        name: 'Illustrator',
+        name: 'Figma',
         description: 'Vector Drawing',
-        href: 'https://www.adobe.com/products/illustrator',
-        icon: import('@/assets/tools/illustrator.svg?raw')
-      },
-      {
-        name: 'After Effects',
-        description: 'Motion Graphics',
-        href: 'https://www.adobe.com/products/aftereffects',
-        icon: import('@/assets/tools/aftereffects.svg?raw')
-      },
-      {
-        name: 'Premiere Pro',
-        description: 'Video Editing',
-        href: 'https://www.adobe.com/products/premiere',
-        icon: import('@/assets/tools/premiere.svg?raw')
-      }
-    ]}
-  />
-  <ToolSection
-    class='mb-5'
-    title='Productivity'
-    tools={[
-      {
-        name: 'Chrome',
-        description: 'Browser',
-        href: 'https://www.google.com/chrome/',
-        icon: import('@/assets/tools/chrome.svg?raw')
-      },
-      {
-        name: 'Firefox',
-        description: 'Browser',
-        href: 'https://www.mozilla.org/en-US/firefox',
-        icon: import('@/assets/tools/firefox.svg?raw')
-      },
-      {
-        name: 'Notion',
-        description: 'Note Taking',
-        href: 'https://www.notion.so/',
-        icon: import('@/assets/tools/notion.svg?raw')
-      },
-      {
-        name: 'Typora',
-        description: 'Markdown Editor',
-        href: 'https://typora.io/',
-        icon: import('@/assets/tools/typora.svg?raw')
-      }
-    ]}
-  />
-  <ToolSection
-    class='mb-5'
-    title='Development'
-    tools={[
-      {
-        name: 'VS Code',
-        description: 'IDE',
-        href: 'https://code.visualstudio.com/',
-        icon: import('@/assets/tools/vscode.svg?raw')
-      },
-      {
-        name: 'Neovim',
-        description: 'IDE',
-        href: 'https://neovim.io/',
-        icon: import('@/assets/tools/neovim.svg?raw')
-      },
-      {
-        name: 'Sublime Text',
-        description: 'IDE',
-        href: 'https://www.sublimetext.com/',
-        icon: import('@/assets/tools/sublime.svg?raw')
+        href: 'https://www.figma.com/',
+        icon: import('@/assets/tools/figma.svg?raw')
       }
     ]}
   />
@@ -129,131 +151,105 @@ const headings = [
     title='Environment'
     tools={[
       {
-        name: 'Arch Linux',
-        description: 'Linux Distribution',
-        href: 'https://archlinux.org/',
-        icon: import('@/assets/tools/archlinux.svg?raw')
+        name: 'MacOS Sonoma 14.7.1',
+        description: "MacBook Pro 16'",
+        href: 'https://www.apple.com/macos/',
+        icon: import('@/assets/tools/apple.svg?raw')
       },
       {
         name: 'Ubuntu 24.04 LTS',
         description: 'Linux Distribution',
         href: 'https://ubuntu.com/',
         icon: import('@/assets/tools/ubuntu.svg?raw')
-      },
-      {
-        name: 'MacOS Tahoe',
-        description: 'MacBook Air',
-        href: 'https://www.apple.com/macos/',
-        icon: import('@/assets/tools/apple.svg?raw')
-      },
-      {
-        name: 'Windows 11',
-        description: 'Framework Laptop 16',
-        href: 'https://news.microsoft.com/windows11-general-availability/',
-        icon: import('@/assets/tools/windows11.svg?raw')
       }
     ]}
   />
 
   {/* social-networks */}
   <h2 id='social-networks'>Social Networks</h2>
-  <p>
-    Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione indoctum
-    dissentiunt, cu meliore fuisset mei, vel quod voluptua ne.
-  </p>
+  <p>你可以在以下平台找到我：</p>
   <Substats
     stats={[
       {
         platform: 'GitHub',
         icon: 'github',
-        link: 'https://github.com/cworld1',
+        link: 'https://github.com/zhuozhiyongde',
         text: 'followers',
-        api: 'github/cworld1'
+        api: 'github/zhuozhiyongde'
       },
       {
-        platform: 'Telegram',
-        icon: 'telegram',
-        color: '#2ca5e0',
-        link: 'https://t.me/cworld0_cn',
-        text: 'subscribers',
-        api: 'telegram/cworld0_cn'
+        platform: 'Zhihu',
+        icon: 'zhihu',
+        color: '#0084ff',
+        link: 'https://www.zhihu.com/people/zhuozhiyongde',
+        text: 'followers',
+        count: 356
       },
       {
-        platform: 'Weibo',
-        icon: 'weibo',
-        color: '#e71f19',
-        link: 'https://weibo.com/cworld0',
+        platform: 'Bilibili',
+        icon: 'bilibili',
+        color: '#fe7398',
+        link: 'https://space.bilibili.com/203396427',
         text: 'followers',
-        api: 'weibo/5501674056'
+        count: 280
       },
       {
         platform: 'Steam',
         icon: 'steam',
         color: '#50769d',
-        link: 'https://steamcommunity.com/id/cworld',
+        link: 'https://steamcommunity.com/profiles/76561199760864774/',
         text: 'games',
-        api: 'steamgames/76561199021278120'
+        count: 1
       }
     ]}
   />
 
-  {/* gossips */}
-  <h2 id='gossips'>Gossips</h2>
-  <Collapse title='Lorem ipsum'>
-    Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione indoctum
-    dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel, at eum oratio
-    possit voluptatum.
-  </Collapse>
-
-  {/* about-blog */}
-  <h2 id='about-blog'>About Blog</h2>
-  <p>Website history:</p>
+  <h2 id='education'>Education</h2>
   <Timeline
     events={[
       {
-        date: '2024-04-29',
-        content:
-          'Website refactored using <a href="https://astro.build/" target="_blank">Astro</a> and <a href="https://github.com/srleom/astro-theme-resume" target="_blank">Astro Theme Resume</a>'
+        date: '2021-09-01',
+        content: '<a href="https://www.pku.edu.cn"target="_blank">北京大学</a>'
       },
       {
-        date: '2024-07-26',
-        content:
-          'Website abstracted as a theme and published on <a href="https://github.com/cworld1/astro-theme-pure"target="_blank">Github</a>'
-      },
-      {
-        date: '2024-07-27',
-        content: 'Began writing website docs'
+        date: '2014-09-01',
+        content: '<a href="https://www.rdfz.cn/"target="_blank">中国人民大学附属中学</a>'
       }
     ]}
   />
-  <p>
-    The smooth operation and personalized customization of website also rely on the resources and
-    technical support provided by the following excellent projects/service providers:
-  </p>
+
+  <h2 id='experience'>Experience</h2>
+  <Timeline
+    events={[
+      {
+        date: '2024-09-11',
+        content:
+          '<a href="https://slide.huh.moe/"target="_blank">北京大学 · 《计算机系统导论》课程助教</a>'
+      }
+    ]}
+  />
+
+  {/* about-blog */}
+  <h2 id='about-blog'>About Blog</h2>
+  <p>本站基于以下项目/服务提供商的资源和技术支持：</p>
   <ul>
-    <li>Domain: <a href='#' target='_blank'>Vercel</a></li>
+    <li>域名: <a href='https://cloud.tencent.com/' target='_blank'>Tencent Cloud</a></li>
     <li>
-      Framework & Theme: <a href='https://astro.build/' target='_blank'>Astro</a> + <a
+      框架 & 主题: <a href='https://astro.build/' target='_blank'>Astro</a> + <a
         href='https://github.com/cworld1/astro-theme-pure'
         target='_blank'>Astro Theme Pure</a
       >
     </li>
+    <li>评论系统：<a href='https://waline.js.org' target='_blank'>Waline</a></li>
     <li>
-      Site hosting: <a href='https://vercel.com/' target='_blank'>Vercel</a>
-    </li>
-    <li>
-      CI/CD: <a href='https://vercel.com/workflow' target='_blank'>Vercel Workflow</a>
-    </li>
-    <!-- <li>Resources speedup: <a href='https://cdn.cbd.int/' target='_blank'>CBD CDN</a></li> -->
-    <li>Comment system: <a href='https://waline.js.org' target='_blank'>Waline</a></li>
-    <li>
-      Visits: <a href='https://supabase.com/' target='_blank'>Supabase</a> +
-      <a href='https://waline.js.org/' target='_blank'>Waline</a>
-    </li>
-    <li>
-      Other statistics: <a href='https://github.com/spencerwooo/substats' target='_blank'
-        >Substats</a
+      访问量统计：<a href='https://waline.js.org/' target='_blank'>Waline</a> + <a
+        href='https://umami.is/'
+        target='_blank'>Umami</a
       >
     </li>
+    <li>
+      粉丝数统计：<a href='https://github.com/spencerwooo/substats' target='_blank'>Substats</a>
+    </li>
   </ul>
+  {config.signature && <Signature />}
 </PageLayout>

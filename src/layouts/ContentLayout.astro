@@ -43,7 +43,7 @@ const { meta, highlightColor, back = '/', ...props } = Astro.props
       <div
         id='content'
         class={cn(
-          'max-w-none animate mt-8 md:min-w-[45ch] overflow-x-hidden',
+          'max-w-none animate mt-8 md:min-w-[45ch] overflow-x-hidden [&_li>ul]:my-2 [&_li>ol]:my-2 [&_:not(pre)>code]:border [&_:not(pre)>code]:border-neutral-300 [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:px-1.5 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:bg-neutral-100 [&_:not(pre)>code]:text-[#476582] [&_:not(pre)>code]:font-normal [&_:not(pre)>code::before]:hidden [&_:not(pre)>code::after]:hidden dark:[&_:not(pre)>code]:bg-neutral-800 dark:[&_:not(pre)>code]:border-neutral-700 dark:[&_:not(pre)>code]:text-[#AAC8E4]',
           integ.typography.class
         )}
       >
