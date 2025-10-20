@@ -1,8 +1,14 @@
 ---
 import { Image } from 'astro:assets'
 
+interface AvatarCache {
+  hash: string
+  path: string
+}
+
 interface friend {
   avatar: string
+  avatar_cache?: AvatarCache
   name: string
   intro: string
   link: string
@@ -25,6 +31,8 @@ interface Props {
   list: friend_list
 }
 const { title, list: friendList, ...props } = Astro.props
+
+const getAvatarSrc = (friend: friend) => friend.avatar_cache?.path ?? friend.avatar
 ---
 
 {title && <h2 id={friendList.id_name}>{title}</h2>}
@@ -39,7 +47,7 @@ const { title, list: friendList, ...props } = Astro.props
               <div class='relative h-14 w-14 min-w-14 overflow-hidden rounded-full'>
                 <Image
                   class='my-0 bg-white'
-                  src={frd.avatar}
+                  src={getAvatarSrc(frd)}
                   height={80}
                   width={80}
                   alt='avatar'
@@ -82,7 +90,7 @@ const { title, list: friendList, ...props } = Astro.props
             {/* avatar bg */}
             <Image
               class='absolute -start-2 top-0 z-0 my-0 h-full w-2/3 bg-white object-cover opacity-15'
-              src={frd.avatar}
+              src={getAvatarSrc(frd)}
               height={80}
               width={80}
               alt='avatar bg'
