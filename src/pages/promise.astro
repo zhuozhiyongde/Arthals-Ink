@@ -1,0 +1,23 @@
+---
+import PageLayout from '@/layouts/BaseLayout.astro'
+
+const meta = {
+  description: 'Promise',
+  title: 'Promise'
+}
+---
+
+<PageLayout {meta}>
+  <div class='px-4 py-10 text-center sm:px-6 lg:px-8 flex flex-col justify-center items-center h-full'>
+    <h1
+      class='block text-7xl font-bold sm:text-9xl text-transparent bg-clip-text bg-gradient-to-r from-green-2 to-blue-5'
+    >
+      Promise
+    </h1>
+    <p class='mt-3 text-muted-foreground text-2xl'>
+      这是一个 <span class='text-blue-500 font-bold'>承诺</span>
+    </p>
+    <p class='mt-3 text-muted-foreground'>Stop wasting your time.</p>
+    <p class=''>Chasing a <span class='text-yellow-500 font-bold'>light</span> beyond reach.</p>
+  </div>
+</PageLayout>
