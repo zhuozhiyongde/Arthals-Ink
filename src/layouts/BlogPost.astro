@@ -1,12 +1,14 @@
 ---
 import type { MarkdownHeading } from 'astro'
 import type { CollectionEntry } from 'astro:content'
+import config from 'virtual:config'
 
 // Plugin styles
 import 'katex/dist/katex.min.css'
 
 import { MediumZoom } from 'astro-pure/advanced'
 import { ArticleBottom, Copyright, Hero, TOC } from 'astro-pure/components/pages'
+import { Signature } from 'astro-pure/user'
 import PageLayout from '@/layouts/ContentLayout.astro'
 import { Comment, PageInfo } from '@/components/waline'
 import { integ } from '@/site-config'
@@ -59,6 +61,7 @@ const primaryColor = data.heroImage?.color ?? 'hsl(var(--primary) / var(--un-tex
 
   <slot />
 
+  {config.signature && <Signature />}
   <Fragment slot='bottom'>
     {/* Copyright */}
     <Copyright {data} />

@@ -3,6 +3,12 @@ import config from 'virtual:config'
 
 import { Icon } from '../user'
 
+const currentYear = new Date().getFullYear();
+const startYear = config.since
+const displayYear = startYear && startYear < currentYear
+  ? `${startYear} - ${currentYear}`
+  : currentYear;
+
 const footerConf = config.footer
 let social = footerConf.social || {}
 
@@ -12,56 +18,22 @@ social.rss = {
   url: '/rss.xml'
 }
 
-const footerLink1 = footerConf.links?.filter(({ pos }) => pos === 1) || []
+const footerLink = footerConf.links || []
 ---
 
 <footer class='mx-auto mb-5 mt-16 w-full'>
   <div class='border-t pt-5'>
-    <div class='flex items-center gap-y-3 max-sm:flex-col sm:justify-between sm:gap-y-0'>
+    <div class='flex items-center gap-y-3 max-md:flex-col md:justify-between md:gap-y-0'>
       <div
-        class='flex items-center gap-x-4 gap-y-2 text-muted-foreground max-sm:flex-col [&_a]:text-foreground'
+        class='flex items-center gap-x-4 gap-y-2 text-muted-foreground max-md:flex-col [&_a]:text-foreground text-sm'
       >
-        {/* Position 1 */}
-        {
-          footerLink1.length > 0 && (
-            <div>
-              {footerLink1.map(({ title, link, style }, index) => (
-                <span>
-                  <a href={link} target='_blank' class={style}>
-                    {title}
-                  </a>
-                  {index < footerLink1.length - 1 && ' • '}
-                </span>
-              ))}
-            </div>
-          )
-        }
-        {/* Position 2 */}
         <div>
-          {config.footer.year}
+          © {displayYear}
           {config.author}
-          {
-            footerConf.links && footerConf.links.length > 0 && (
-              <>
-                &
-                <span>
-                  {footerConf.links
-                    .filter(({ pos }) => pos === 2)
-                    .map(({ title, link, style }) => (
-                      <span>
-                        <a href={link} target='_blank' class={style}>
-                          {title}
-                        </a>
-                      </span>
-                    ))}
-                </span>
-              </>
-            )
-          }
         </div>
         {
           footerConf.credits && (
-            <span>
+            <div>
               <a href='https://github.com/withastro/astro' target='_blank'>
                 Astro
               </a>
@@ -70,7 +42,19 @@ const footerLink1 = footerConf.links?.filter(({ pos }) => pos === 1) || []
                 Pure
               </a>
               theme powered
-            </span>
+            </div>
+          )
+        }
+        {
+          footerLink.length > 0 && (
+            <div class='flex items-center gap-x-2 justify-center'>
+              {footerLink.map(({ title, link, style }, index) => (
+                <a href={link} target='_blank' class={style}>
+                  {title}
+                </a>
+                <span>{index < footerLink.length - 1 && '|'}</span>
+              ))}
+            </div>
           )
         }
       </div>

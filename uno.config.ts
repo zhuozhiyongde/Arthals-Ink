@@ -1,4 +1,4 @@
-import { defineConfig, presetMini, presetTypography, type Rule } from 'unocss'
+import { defineConfig, presetTypography, presetWind3, type Rule } from 'unocss'
 
 import { integ } from './src/site.config.ts'
 
@@ -35,6 +35,7 @@ const typographyConfig = {
     blockquote: {
       position: 'relative',
       overflow: 'hidden',
+      'font-style': 'normal',
       'border-width': '1px',
       'border-left': 'inherit',
       'border-radius': 'var(--radius)',
@@ -132,6 +133,19 @@ const typographyConfig = {
     'code:not(pre code)': {
       'white-space': 'pre-wrap!important',
       'word-break': 'break-all!important'
+    },
+    '.katex-html': {
+      overflow: 'auto hidden',
+      padding: '3px'
+    },
+    '.katex-html .base': {
+      'margin-block': '0',
+      'margin-inline': 'auto'
+    },
+    '.katex-html .tag': {
+      position: 'relative !important',
+      display: 'inline-block',
+      'padding-inline-start': '0.5rem'
     }
   }
 }
@@ -204,7 +218,8 @@ const rules: Rule<object>[] = [
 
 export default defineConfig({
   presets: [
-    presetMini(), // required
+    // presetMini(), // required
+    presetWind3(), // original full version
     presetTypography(typographyConfig)
   ],
   rules,
@@ -218,6 +233,7 @@ export default defineConfig({
     'rounded-b-2xl',
     // Typography
     'text-base',
-    'prose'
+    'prose',
+    'm-2'
   ]
 })

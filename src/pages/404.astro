@@ -9,8 +9,27 @@ const meta = {
 ---
 
 <PageLayout {meta}>
+  <script is:inline>
+    // 获取页面 url，如：https://arthals.ink/posts/experience/attack-lab
+    // 根据 /  进行分割，只要最后一段：attack-lab
+    // 然后导航到 /blog/ + 最后一段
+    // 如：https://arthals.ink/posts/experience/attack-lab -> /blog/attack-lab
+    // 然后进行页面跳转
+    const url = new URL(window.location.href)
+    const path = url.pathname.split('/')
+    // 如果发现 posts 字样，则进行页面跳转
+    if (path.includes('posts')) {
+      const newUrl = `/blog/${path.pop()}`
+      // 进行页面跳转
+      window.location.href = newUrl
+    }
+  </script>
   <div class='px-4 py-10 text-center sm:px-6 lg:px-8'>
     <h1 class='block text-7xl font-bold sm:text-9xl'>404</h1>
+    <!-- <p class='mt-3 text-muted-foreground'>
+      本站最近更换了框架，导致路径导航失效，你或许可以尝试使用<a href='/search'>搜索</a
+      >来重新找到相关博文
+    </p> -->
     <p class='mt-3 text-muted-foreground'>Oops, something went wrong.</p>
     <p class='text-lg'>Sorry, we couldn't find your page.</p>
     <Button title='Back to home' href='/' variant='ahead' class='mt-5' />

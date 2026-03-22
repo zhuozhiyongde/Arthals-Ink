@@ -1,9 +1,16 @@
+// @ts-check
+
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
-import vercel from '@astrojs/vercel'
+// Adapter
+// import vercel from '@astrojs/vercel'
+// import node from '@astrojs/node'
+// Integrations
 import AstroPureIntegration from 'astro-pure'
 import { defineConfig } from 'astro/config'
 import rehypeKatex from 'rehype-katex'
+import { remarkAlert } from 'remark-github-blockquote-alert'
 import remarkMath from 'remark-math'
+import UnoCSS from 'unocss/astro'
 
 // Others
 // import { visualizer } from 'rollup-plugin-visualizer'
@@ -25,7 +32,7 @@ import config from './src/site.config.ts'
 // https://astro.build/config
 export default defineConfig({
   // Top-Level Options
-  site: 'https://astro-pure.js.org',
+  site: 'https://arthals.ink',
   // Deploy to a sub path; See https://astro-pure.js.org/docs/setup/deployment#platform-with-base-path
   // base: '/astro-pure/',
   trailingSlash: 'never',
@@ -33,8 +40,8 @@ export default defineConfig({
   // Adapter
   // https://docs.astro.build/en/guides/deploy/
   // 1. Vercel (serverless)
-  adapter: vercel(),
-  output: 'server',
+  // adapter: vercel(),
+  // output: 'server',
   // 2. Vercel (static)
   // adapter: vercelStatic(),
   // 3. Local (standalone)
@@ -68,13 +75,14 @@ export default defineConfig({
   prefetch: true,
   // Server Options
   server: {
-    host: true
+    host: true,
+    allowedHosts: ['arthals.ink']
   },
   // Markdown Options
   markdown: {
-    remarkPlugins: [remarkMath],
+    remarkPlugins: [remarkMath, remarkAlert],
     rehypePlugins: [
-      [rehypeKatex, {}],
+      [rehypeKatex, { strict: false }],
       rehypeHeadingIds,
       [
         rehypeAutolinkHeadings,
