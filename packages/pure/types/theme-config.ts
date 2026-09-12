@@ -18,6 +18,14 @@ export const ThemeConfigSchema = () =>
     /** Will be used in index page & copyright declaration */
     author: z.string().describe('Will be used in index page & copyright declaration'),
 
+    /** The year the site was established. If specified, the copyright year will be displayed as a range. */
+    since: z
+      .number()
+      .optional()
+      .describe(
+        'The year the site was established. If specified, the copyright year will be displayed as a range.'
+      ),
+
     /** Description metadata for your website. Can be used in page metadata. */
     description: z
       .string()
@@ -138,9 +146,7 @@ export const ThemeConfigSchema = () =>
             /** Link URL */
             link: z.string().describe('Link URL'),
             /** Link style */
-            style: z.string().optional().describe('Link style'),
-            /** Link position */
-            pos: z.number().default(1).describe('Link position')
+            style: z.string().optional().describe('Link style')
           })
         )
         .optional()
@@ -188,7 +194,9 @@ export const ThemeConfigSchema = () =>
 
       /** Enable image captions (default false) */
       imageCaption: z.boolean().default(false).describe('Enable image captions')
-    })
+    }),
+
+    signature: z.boolean().default(true)
   })
 
 export type ThemeUserConfig = z.input<ReturnType<typeof ThemeConfigSchema>>

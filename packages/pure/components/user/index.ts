@@ -17,6 +17,7 @@ export { default as Spoiler } from './Spoiler.astro'
 export { default as FormattedDate } from './FormattedDate.astro'
 export { default as Label } from './Label.astro'
 export { default as Svg } from './Svg.astro'
+export { default as Signature } from './Signature.astro'
 
 // Sources
 export { default as Icon } from './Icon.astro'

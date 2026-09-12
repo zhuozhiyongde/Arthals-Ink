@@ -33,7 +33,5 @@ export default async function main() {
     } catch (error) {
       console.error(error)
     }
-  } else {
-    console.log('BUN_LINK_PKG is not set to true. Skipping commands.')
   }
 }
