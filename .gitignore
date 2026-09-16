@@ -39,3 +39,5 @@ ignore.*
 bunfig.toml
 /src/content/blog/test.*
 /test/
+
+backup/
