@@ -53,11 +53,17 @@ const typographyConfig: TypographyOptions = {
     'h1:target>a,h2:target>a,h3:target>a,h4:target>a,h5:target>a,h6:target>a': {
       opacity: 1
     },
+    // Paragraph
+    p: {
+      margin: '1em 0'
+    },
     // Links
     a: {
       'word-wrap': 'break-word',
       'word-break': 'break-word',
-      'overflow-wrap': 'anywhere'
+      'overflow-wrap': 'anywhere',
+      'font-weight': '500',
+      color: fg
     },
     // Inline code
     ':not(pre) > code': {
@@ -82,6 +88,8 @@ const typographyConfig: TypographyOptions = {
     blockquote: {
       position: 'relative',
       overflow: 'hidden',
+      'font-weight': '400',
+      'font-style': 'normal',
       'border-width': '1px',
       'border-inline-start-color': 'inherit',
       'border-radius': `calc(1.5 * ${radius})`,
@@ -100,6 +108,12 @@ const typographyConfig: TypographyOptions = {
         '"Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif',
       transform: 'rotate(-15deg)',
       opacity: '0.1'
+    },
+    'blockquote p:first-of-type::before': {
+      content: 'none'
+    },
+    'blockquote p:last-of-type::after': {
+      content: 'none'
     },
     // Table
     table: { display: 'block', 'font-size': '.875em', 'overflow-x': 'auto' },
@@ -120,7 +134,28 @@ const typographyConfig: TypographyOptions = {
       'border-color': border,
       'box-shadow': '0 0 0 1px hsl(var(--card) / 1), 0 3px hsl(var(--card) / 1)'
     },
-    'sup>a': { 'scroll-margin-top': '4rem' }
+    'sup>a': { 'scroll-margin-top': '4rem' },
+    strong: {
+      'font-weight': '600',
+      color: fg
+    },
+    'code:not(pre code)': {
+      'white-space': 'pre-wrap!important',
+      'word-break': 'break-all!important'
+    },
+    '.katex-html': {
+      overflow: 'auto hidden',
+      padding: '3px'
+    },
+    '.katex-html .base': {
+      'margin-block': '0',
+      'margin-inline': 'auto'
+    },
+    '.katex-html .tag': {
+      position: 'relative !important',
+      display: 'inline-block',
+      'padding-inline-start': '0.5rem'
+    }
   }
 }
 
@@ -187,6 +222,8 @@ export default defineConfig({
     'rounded-b-2xl',
     // Typography
     'text-base',
-    'prose'
+    'leading-7',
+    'prose',
+    'm-2'
   ]
 })
