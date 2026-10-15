@@ -3,18 +3,19 @@ import links from '@/public/links.json'
 import config from 'virtual:config'
 
 import { Collapse, Timeline } from 'astro-pure/user'
+import Signature from '@/components/Signature.astro'
 import PageLayout from '@/layouts/CommonPage.astro'
 import FriendList from '@/components/links/FriendList.astro'
 
 const headings = [
   { depth: 2, slug: 'common-links', text: 'Common Links' },
   { depth: 2, slug: 'special-links', text: 'Special Links' },
-  { depth: 2, slug: 'apply-links', text: 'Apply Links' }
+  { depth: 2, slug: 'apply-links', text: 'Apply Links' },
+  { depth: 2, slug: 'friend-circle', text: 'Friend Circle' }
 ]
 
 const { friends } = links
 const linksConf = config.integ.links
-const linkEditPage = 'https://github.com/cworld1/astro-theme-pure/blob/main/public/links.json'
 ---
 
 <PageLayout title='Links' {headings} comment>
@@ -48,11 +49,7 @@ const linkEditPage = 'https://github.com/cworld1/astro-theme-pure/blob/main/publ
     }
   </blockquote>
 
-  <p>
-    可通过下方留言或 <a href={linkEditPage} target='_blank'>提交 PR</a> 申请友链。申请说明：<br />
-    Apply your link by leaving comment or <a href={linkEditPage} target='_blank'>Submitting a PR</a
-    >. Additional info:
-  </p>
+  <p>申请时还请按照这个模板留言，此外有关申请说明：</p>
   <ul>
     <li>推荐了本站 You've recommended our link on your website</li>
     <li>站点活着且有正式域名 Make sure your site is alive with a formal domain</li>
@@ -62,4 +59,20 @@ const linkEditPage = 'https://github.com/cworld1/astro-theme-pure/blob/main/publ
     </li>
     <li>内容不违反国家法律 Content does not violate laws</li>
   </ul>
+  <h2 id='friend-circle'>Friend Circle</h2>
+  <div id='friend-circle-lite-root' class='not-prose'>Loading...</div>
+  <script>
+    import '@/assets/styles/fc.css'
+
+    import { FriendCircle } from '@/plugins/friend-circle'
+
+    const fc = new FriendCircle()
+    fc.init({
+      private_api_url: 'https://friends.arthals.ink/',
+      page_turning_number: 10,
+      error_img: 'https://cravatar.cn/avatar/57d8260dfb55501c37dde588e7c3852c'
+    })
+    fc.load()
+  </script>
+  <Signature />
 </PageLayout>

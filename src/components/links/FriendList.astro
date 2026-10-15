@@ -38,81 +38,228 @@ const getAvatarSrc = (friend: Friend) =>
   (config.integ?.links?.cacheAvatar ?? false)
     ? (friend.avatar_cache?.path ?? friend.avatar)
     : friend.avatar
+
+const avatarFallbackGradients = [
+  ['hsl(205 24% 82%)', 'hsl(222 20% 88%)'],
+  ['hsl(155 22% 82%)', 'hsl(180 20% 88%)'],
+  ['hsl(330 24% 86%)', 'hsl(270 20% 89%)'],
+  ['hsl(35 25% 84%)', 'hsl(18 28% 88%)'],
+  ['hsl(215 16% 82%)', 'hsl(210 20% 90%)'],
+  ['hsl(95 18% 84%)', 'hsl(145 20% 88%)'],
+  ['hsl(350 22% 86%)', 'hsl(310 20% 90%)'],
+  ['hsl(190 22% 83%)', 'hsl(215 22% 88%)']
+]
+
+function getAvatarFallback(name: string) {
+  const words = name.trim().split(/\s+/).filter(Boolean)
+  const characters =
+    words.length > 1
+      ? words.slice(0, 2).map((word) => Array.from(word)[0])
+      : Array.from(words[0] ?? '').slice(0, 2)
+
+  return characters.join('').toLocaleUpperCase() || '?'
+}
+
+function getAvatarFallbackBackground(name: string) {
+  const hash = Array.from(name).reduce(
+    (value, character) => (value * 31 + (character.codePointAt(0) ?? 0)) >>> 0,
+    0
+  )
+  const [start, end] = avatarFallbackGradients[hash % avatarFallbackGradients.length]
+
+  return `linear-gradient(135deg, ${start}, ${end})`
+}
 ---
 
 {title && <h2 id={friendList.id_name}>{title}</h2>}
 <div class='grid gap-3.5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3' {...props}>
   {
     friendList.link_list.length > 0 ? (
-      shuffle(friendList.link_list).map((frd: Friend) => (
-        <a href={frd.link} target='_blank' class='no-underline'>
-          <div class='group relative h-full overflow-hidden rounded-2xl border bg-background px-2.5 py-1.5 transition-colors hover:bg-muted sm:px-4 sm:py-2'>
-            <div class='relative z-10 flex h-full items-center gap-3'>
-              {/* avatar */}
-              <div class='relative h-14 w-14 min-w-14 overflow-hidden rounded-full'>
-                <Image
-                  class='my-0 bg-card'
-                  src={getAvatarSrc(frd)}
-                  height={80}
-                  width={80}
-                  alt='avatar'
-                  loading='lazy'
-                />
-                <div class='absolute start-0 top-0 h-full w-full'>
-                  <div class='flex h-full w-full items-center justify-center rounded-full bg-foreground opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-50'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='32'
-                      height='32'
-                      viewBox='0 0 24 24'
-                      fill='none'
-                      stroke-width='2.5'
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
-                      class='me-2 stroke-background'
-                    >
-                      <line
-                        x1='5'
-                        y1='12'
-                        x2='19'
-                        y2='12'
-                        class='translate-x-4 scale-x-0 transition-all duration-300 ease-in-out group-hover:translate-x-1 group-hover:scale-x-100'
-                      />
-                      <polyline
-                        points='12 5 19 12 12 19'
-                        class='translate-x-0 transition-all duration-300 ease-in-out group-hover:translate-x-1'
-                      />
-                    </svg>
+      shuffle(friendList.link_list).map((frd: Friend) => {
+        const avatarSrc = getAvatarSrc(frd)
+        const isRemoteAvatar = /^https?:\/\//.test(avatarSrc)
+        const avatarFallback = getAvatarFallback(frd.name)
+        const avatarFallbackBackground = getAvatarFallbackBackground(frd.name)
+
+        return (
+          <a href={frd.link} target='_blank' class='no-underline'>
+            <div
+              class='group relative h-full overflow-hidden rounded-2xl border bg-background px-2.5 py-1.5 transition-colors hover:bg-muted sm:px-4 sm:py-2'
+              data-friend-card
+            >
+              <div class='relative z-10 flex h-full items-center gap-3'>
+                {/* avatar */}
+                <div
+                  class='relative h-14 w-14 min-w-14 overflow-hidden rounded-full'
+                  data-friend-avatar-shell
+                  style={{ backgroundImage: avatarFallbackBackground }}
+                >
+                  <span
+                    class='absolute inset-0 flex items-center justify-center text-base font-semibold text-slate-600'
+                    aria-hidden='true'
+                    data-friend-avatar-label
+                  >
+                    {avatarFallback}
+                  </span>
+                  {isRemoteAvatar ? (
+                    <img
+                      class='absolute inset-0 my-0 h-full w-full bg-card object-cover'
+                      src={avatarSrc}
+                      height='80'
+                      width='80'
+                      alt={`${frd.name} avatar`}
+                      loading='lazy'
+                      decoding='async'
+                      data-friend-avatar
+                    />
+                  ) : (
+                    <Image
+                      class='absolute inset-0 my-0 h-full w-full bg-card object-cover'
+                      src={avatarSrc}
+                      height={80}
+                      width={80}
+                      alt={`${frd.name} avatar`}
+                      loading='lazy'
+                      data-friend-avatar
+                    />
+                  )}
+                  <div class='absolute start-0 top-0 h-full w-full'>
+                    <div class='flex h-full w-full items-center justify-center rounded-full bg-foreground opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-50'>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='32'
+                        height='32'
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke-width='2.5'
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                        class='me-2 stroke-background'
+                      >
+                        <line
+                          x1='5'
+                          y1='12'
+                          x2='19'
+                          y2='12'
+                          class='translate-x-4 scale-x-0 transition-all duration-300 ease-in-out group-hover:translate-x-1 group-hover:scale-x-100'
+                        />
+                        <polyline
+                          points='12 5 19 12 12 19'
+                          class='translate-x-0 transition-all duration-300 ease-in-out group-hover:translate-x-1'
+                        />
+                      </svg>
+                    </div>
                   </div>
                 </div>
+                {/* details */}
+                <div class='flex flex-col gap-y-1'>
+                  <p class='my-0 line-clamp-1 text-sm'>{frd.name} </p>
+                  <p class='my-0 line-clamp-1 text-xs text-muted-foreground'>{frd.intro}</p>
+                </div>
               </div>
-              {/* details */}
-              <div class='flex flex-col gap-y-1'>
-                <p class='my-0 line-clamp-1 text-sm'>{frd.name} </p>
-                <p class='my-0 line-clamp-1 text-xs text-muted-foreground'>{frd.intro}</p>
-              </div>
+              {/* avatar bg */}
+              <div
+                class='absolute -start-2 top-0 z-0 my-0 hidden h-full w-2/3 opacity-15'
+                aria-hidden='true'
+                data-friend-avatar-bg-fallback
+                style={{
+                  backgroundImage: avatarFallbackBackground,
+                  msMaskImage:
+                    '-ms-linear-gradient(right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)',
+                  WebkitMaskImage:
+                    '-webkit-linear-gradient(right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)',
+                  maskImage: 'linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)'
+                }}
+              />
+              {isRemoteAvatar ? (
+                <img
+                  class='absolute -start-2 top-0 z-0 my-0 h-full w-2/3 bg-white object-cover opacity-15'
+                  src={avatarSrc}
+                  height='80'
+                  width='80'
+                  alt=''
+                  loading='lazy'
+                  decoding='async'
+                  aria-hidden='true'
+                  data-friend-avatar
+                  data-friend-avatar-bg
+                  style={{
+                    msMaskImage:
+                      '-ms-linear-gradient(right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)',
+                    WebkitMaskImage:
+                      '-webkit-linear-gradient(right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)',
+                    maskImage:
+                      'linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)'
+                  }}
+                />
+              ) : (
+                <Image
+                  class='absolute -start-2 top-0 z-0 my-0 h-full w-2/3 bg-white object-cover opacity-15'
+                  src={avatarSrc}
+                  height={80}
+                  width={80}
+                  alt=''
+                  loading='lazy'
+                  aria-hidden='true'
+                  data-friend-avatar
+                  data-friend-avatar-bg
+                  style={{
+                    msMaskImage:
+                      '-ms-linear-gradient(right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)',
+                    WebkitMaskImage:
+                      '-webkit-linear-gradient(right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)',
+                    maskImage:
+                      'linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)'
+                  }}
+                />
+              )}
             </div>
-            {/* avatar bg */}
-            <Image
-              class='absolute -start-2 top-0 z-0 my-0 h-full w-2/3 bg-white object-cover opacity-15'
-              src={getAvatarSrc(frd)}
-              height={80}
-              width={80}
-              alt='avatar bg'
-              loading='lazy'
-              style={{
-                msMaskImage:
-                  '-ms-linear-gradient(right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)',
-                WebkitMaskImage:
-                  '-webkit-linear-gradient(right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)',
-                maskImage: 'linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)'
-              }}
-            />
-          </div>
-        </a>
-      ))
+          </a>
+        )
+      })
     ) : (
       <p>Nothing here.</p>
     )
   }
 </div>
+
+<script>
+  function showAvatarFallback(image: HTMLImageElement) {
+    const card = image.closest<HTMLElement>('[data-friend-card]')
+    if (card) card.dataset.avatarFailed = 'true'
+  }
+
+  function setupAvatarFallbacks() {
+    document.querySelectorAll<HTMLImageElement>('[data-friend-avatar]').forEach((image) => {
+      if (image.dataset.avatarFallbackReady) return
+
+      image.dataset.avatarFallbackReady = 'true'
+      image.addEventListener('error', () => showAvatarFallback(image), { once: true })
+
+      if (image.complete && image.naturalWidth === 0) showAvatarFallback(image)
+    })
+  }
+
+  setupAvatarFallbacks()
+  document.addEventListener('astro:page-load', setupAvatarFallbacks)
+</script>
+
+<style>
+  [data-friend-card][data-avatar-failed] [data-friend-avatar] {
+    display: none;
+  }
+
+  [data-friend-card][data-avatar-failed] [data-friend-avatar-bg-fallback] {
+    display: block;
+  }
+
+  :global(.dark) [data-friend-avatar-shell],
+  :global(.dark) [data-friend-avatar-bg-fallback] {
+    background-color: hsl(220 12% 38%);
+    background-blend-mode: multiply;
+  }
+
+  :global(.dark) [data-friend-avatar-label] {
+    color: hsl(215 18% 78%);
+  }
+</style>
